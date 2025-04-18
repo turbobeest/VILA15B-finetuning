@@ -1,0 +1,9 @@
+{
+  "projectName": "vila15B-fine-tuning-conda",
+  "tasksDirectory": ".taskmaster/tasks",
+  "docsDirectory": ".taskmaster/docs",
+  "scriptsDirectory": ".taskmaster/scripts",
+  "defaultModel": "claude-3-sonnet-20240229",
+  "maxTokens": 4000,
+  "temperature": 0.7
+} 

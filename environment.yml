@@ -1,0 +1,27 @@
+name: vila-finetune
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10 # Or specify a version compatible with VILA/dependencies
+  - pip
+  # Core ML/VLM libraries
+  - pytorch # Specify version if needed, e.g., pytorch>=2.1
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=11.8 # Or 12.1, check VILA/NVLabs repo recommendations & your driver
+  - transformers # Hugging Face Transformers
+  # Video/Image processing
+  - opencv
+  - ffmpeg # Often needed by OpenCV for video formats
+  # Utilities
+  - jupyter # For notebooks
+  - notebook
+  - ipywidgets # For notebook interactivity
+  - tqdm # Progress bars
+  - requests # For potential downloads (though aim for air-gap)
+  - pip:
+    # Add any pip-only packages here. We might discover more from VILA repo.
+    # e.g., - accelerate 

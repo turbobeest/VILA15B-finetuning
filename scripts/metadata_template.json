@@ -1,0 +1,28 @@
+{
+    "video_id": "unique_identifier_for_video",
+    "description": "Detailed description of the video content",
+    "timestamp": "2024-04-18T12:00:00Z",
+    "scene_type": "indoor/outdoor/street/office/etc",
+    "objects": [
+        {
+            "id": "object1",
+            "type": "person/vehicle/etc",
+            "bbox": [0, 0, 100, 100],
+            "attributes": ["moving", "standing", "etc"]
+        }
+    ],
+    "actions": [
+        {
+            "type": "walking/running/etc",
+            "actor": "object1",
+            "start_frame": 0,
+            "end_frame": 30
+        }
+    ],
+    "additional_metadata": {
+        "camera_id": "optional_camera_identifier",
+        "location": "optional_location_info",
+        "weather": "optional_weather_conditions",
+        "lighting": "optional_lighting_conditions"
+    }
+} 

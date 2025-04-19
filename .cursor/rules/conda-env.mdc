@@ -1,0 +1,41 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Rule: Activate `vila-finetune` Conda Environment
+
+- **Always Activate the Environment:** Before listing any commands for the human to perform or directly running any Python scripts, installing packages (even exceptions like `flash-attn`), or performing development tasks related to this project, you **MUST** activate the correct conda environment or add the command to activate the correct conda environment.
+    - ✅ `conda activate vila-finetune`
+
+- **Rationale:**
+    - Ensures all code runs with the specific package versions defined in [`environment.yml`](mdc:environment.yml).
+    - Prevents conflicts with globally installed packages or other conda environments.
+    - Maintains reproducibility as mandated by [`project-rules.mdc`](mdc:.cursor/rules/project-rules.mdc).
+
+- **Running Scripts:**
+    - Activate the environment first, then run the script.
+    ```bash
+    # ✅ DO: Activate first
+    conda activate vila-finetune
+    python scripts/validate_datasets.py
+
+    # ❌ DON'T: Run directly from base or other environment
+    # (base) python scripts/validate_datasets.py  <-- Incorrect Environment
+    ```
+
+- **Jupyter Notebooks:**
+    - Ensure your Jupyter kernel is configured to use the `vila-finetune` environment's Python interpreter.
+
+- **Verification:**
+    - You can check your active environment using:
+    ```bash
+    conda info --envs
+    ```
+    - The line starting with `*` should indicate `vila-finetune`.
+
+- **Deactivation:**
+    - When finished working on this project, you can deactivate the environment:
+    ```bash
+    conda deactivate
+    ```

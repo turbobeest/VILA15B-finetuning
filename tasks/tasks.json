@@ -1,0 +1,116 @@
+[
+  {
+    "id": 1,
+    "title": "Setup GitHub Repo",
+    "description": "Initialize the GitHub repository.",
+    "status": "done",
+    "dependencies": [],
+    "priority": "medium",
+    "details": "The repository https://github.com/turbobeest/VILA15B-finetuning was created.",
+    "testStrategy": "Verify repository exists and is accessible.",
+    "subtasks": []
+  },
+  {
+    "id": 2,
+    "title": "Research, Analysis & Prerequisite Gathering",
+    "description": "Analyze workspace, VILA repo, Hugging Face pages, identify components and dependencies. Based on old task02.md.",
+    "status": "done",
+    "dependencies": [],
+    "priority": "medium",
+    "details": "Performed deep dive into NVLabs/VILA GitHub repo, reviewed Hugging Face pages, identified necessary model components and dependencies. Created initial environment.yml.",
+    "testStrategy": "Confirm environment.yml exists and key dependencies are listed.",
+    "subtasks": []
+  },
+  {
+    "id": 3,
+    "title": "Model Acquisition & Dataset Preparation",
+    "description": "Acquire NVILA-15B model, prepare datasets (including NW & PI), verify environment setup. Based on old 03_model_acquisition_dataset_preparation.md.",
+    "status": "done",
+    "dependencies": [
+      2
+    ],
+    "priority": "high",
+    "details": "Download NVILA-15B, verify components (LLM, tokenizer, vision tower, projector), set up directory structure. Process NW-test-camera-1 and PI-test-camera-1 datasets into VILA format. Install flash-attn, s2wrapper, VILA (editable), apply DeepSpeed patch. Validate model loading and dataset structure.",
+    "testStrategy": "Model loads without error. Datasets are in correct format. Environment passes dependency checks.",
+    "subtasks": []
+  },
+  {
+    "id": 4,
+    "title": "Define Fine-tuning Strategy",
+    "description": "Define hyperparameters, data splitting, training parameters, and evaluation metrics for fine-tuning on CCTV footage.",
+    "status": "pending",
+    "dependencies": [
+      3
+    ],
+    "priority": "high",
+    "details": "Determine learning rate, batch size, number of epochs. Decide on validation split strategy (e.g., 80/20 train/val). Choose appropriate evaluation metrics (e.g., perplexity, task-specific accuracy if applicable). Document chosen parameters.",
+    "testStrategy": "A configuration file or document exists detailing the full fine-tuning strategy.",
+    "subtasks": []
+  },
+  {
+    "id": 5,
+    "title": "Implement Fine-tuning Script",
+    "description": "Adapt or create a Python script using the VILA codebase to perform fine-tuning with the defined strategy. Ensure compatibility with local environment and dataset format.",
+    "status": "pending",
+    "dependencies": [
+      4
+    ],
+    "priority": "high",
+    "details": "Modify VILA's finetuning scripts (e.g., finetuning/finetune.py) or create a new one. Ensure script correctly loads the model, tokenizer, and datasets. Implement data loading/preprocessing. Integrate defined hyperparameters. Add logging for metrics.",
+    "testStrategy": "Script runs without crashing, loads data, and starts a training loop (can be tested with minimal data/epochs initially).",
+    "subtasks": []
+  },
+  {
+    "id": 6,
+    "title": "Run Initial Fine-tuning (NW-test-camera-1)",
+    "description": "Execute the fine-tuning script using the NW-test-camera-1 dataset. Monitor training progress and log results.",
+    "status": "pending",
+    "dependencies": [
+      5
+    ],
+    "priority": "medium",
+    "details": "Run the implemented script with the NW-test-camera-1 data and the defined strategy. Ensure sufficient compute resources are available. Monitor training logs for loss reduction and metric improvements. Save checkpoints.",
+    "testStrategy": "Training completes for the specified duration. Logs and model checkpoints are saved.",
+    "subtasks": []
+  },
+  {
+    "id": 7,
+    "title": "Evaluate Fine-tuned Model (NW-test-camera-1, Validation)",
+    "description": "Evaluate the performance of the model fine-tuned on NW-test-camera-1. Use appropriate validation techniques (e.g., hold-out set, comparison to base model).",
+    "status": "pending",
+    "dependencies": [
+      6
+    ],
+    "priority": "medium",
+    "details": "Use the validation split of NW-test-camera-1 (or a separate test set). Calculate defined evaluation metrics. Optionally, perform qualitative analysis by comparing model outputs to base model outputs on sample prompts/images/videos.",
+    "testStrategy": "Evaluation metrics are calculated and reported. Comparison against base model (if performed) is documented.",
+    "subtasks": []
+  },
+  {
+    "id": 8,
+    "title": "Develop Production System Architecture",
+    "description": "Design the high-level architecture for an autonomous system that ingests new data and triggers fine-tuning (even if implementation is deferred).",
+    "status": "pending",
+    "dependencies": [
+      2
+    ],
+    "priority": "low",
+    "details": "Diagram the components needed: data ingestion mechanism, storage, trigger for fine-tuning, compute resource allocation, model versioning, serving mechanism. Define interfaces between components.",
+    "testStrategy": "An architecture diagram and description document exists.",
+    "subtasks": []
+  },
+  {
+    "id": 9,
+    "title": "End-to-End System Testing (PI-test-camera-1)",
+    "description": "Perform end-to-end testing of the fine-tuning process using the PI-test-camera-1 dataset to simulate a different camera/scenario.",
+    "status": "pending",
+    "dependencies": [
+      7,
+      8
+    ],
+    "priority": "medium",
+    "details": "Repeat the fine-tuning (Task 6) and evaluation (Task 7) process using the PI-test-camera-1 dataset. Compare results to the NW-test-camera-1 run. Identify any dataset-specific issues or necessary adjustments.",
+    "testStrategy": "Fine-tuning and evaluation complete successfully for PI-test-camera-1. Results are documented and compared to the first run.",
+    "subtasks": []
+  }
+] 

@@ -5,23 +5,90 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.10 # Or specify a version compatible with VILA/dependencies
+  # Base
+  - python=3.10
   - pip
-  # Core ML/VLM libraries
-  - pytorch # Specify version if needed, e.g., pytorch>=2.1
-  - torchvision
-  - torchaudio
-  - pytorch-cuda=11.8 # Or 12.1, check VILA/NVLabs repo recommendations & your driver
-  - transformers # Hugging Face Transformers
+
+  # Core ML/VLM (Matching VILA versions where possible)
+  - pytorch=2.3.0
+  - torchvision=0.18.0
+  - torchaudio # Keep for consistency, version likely tied to pytorch
+  - pytorch-cuda=12.1 # Required by flash-attn wheel & VILA repo
+  - transformers>=4.46.0
+  - sentencepiece>=0.1.99
+  - tokenizers>=0.15.2
+  - accelerate>=0.34.2
+  - peft>=0.9.0
+  - bitsandbytes>=0.43.2
+
+  # DeepSpeed (Specific version)
+  - deepspeed=0.9.5
+  - ninja
+
   # Video/Image processing
-  - opencv
-  - ffmpeg # Often needed by OpenCV for video formats
+  - opencv>=4.8.0
+  - ffmpeg
+
   # Utilities
-  - jupyter # For notebooks
+  - jupyter
   - notebook
-  - ipywidgets # For notebook interactivity
-  - tqdm # Progress bars
-  - requests # For potential downloads (though aim for air-gap)
+  - ipywidgets
+  - tqdm
+  - requests
+  - protobuf>=3.20.0
+  - wandb
+  - pydantic<2,>=1
+  - shortuuid
+  - numpy>=1.26.4
+  - einops>=0.6.1
+  - timm>=0.9.12
+
+  # Model Management
+  - pathlib>=1.0.1
+
+  # Pip-installed dependencies
   - pip:
-    # Add any pip-only packages here. We might discover more from VILA repo.
-    # e.g., - accelerate 
+    # CRITICAL: Install flash-attn wheel separately after conda env creation!
+    # See VILA environment_setup.sh:
+    # pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.5.8/flash_attn-2.5.8+cu122torch2.3cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
+    - flash_attn==2.5.8 # Placeholder - must be installed via wheel
+
+    # Install VILA itself in editable mode after cloning it (needed for deepspeed patch)
+    # pip install -e ./external/VILA[train,eval]
+    - vila # Placeholder - must be installed in editable mode
+
+    # Required pip deps from VILA pyproject
+    - markdown2[all]
+    - gradio==3.35.2
+    - httpx
+    - uvicorn
+    - fastapi
+    - fire
+    - seaborn
+    - ring_flash_attn==0.1.1
+    - einops-exts==0.0.4
+    - openpyxl==3.1.2
+    - datasets>=2.16.1
+    - openai==1.8.0
+    - webdataset==0.2.86
+    - nltk==3.3
+    - pywsd==1.2.4
+    - tyro
+    - pytest
+    - pre-commit
+    - loguru
+    - hydra-core
+    - xgrammar
+    - decord==0.6.0
+    - pytorchvideo==0.1.5
+
+    # Optional: Triton for quantization
+    # pip install triton==3.1.0
+    - triton==3.1.0 # Optional - install separately if needed
+
+# IMPORTANT INSTALLATION NOTES:
+# 1. Create environment: conda env create -f environment.yml
+# 2. Install flash-attn wheel: pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.5.8/flash_attn-2.5.8+cu122torch2.3cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
+# 3. Install s2wrapper from GitHub: pip install git+https://github.com/bfshi/scaling_on_scales
+# 4. Clone VILA repo and install in editable mode: pip install -e ./external/VILA[train,eval]
+# 5. Apply DeepSpeed patch: Copy files into installed deepspeed package as per VILA instructions 

@@ -1,0 +1,94 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: NVILA-15B Fine-tuning Project Rules and Requirements
+globs: ["**/*"]
+priority: HIGH
+alwaysApply: true
+---
+
+# Project Rules: NVILA-15B Fine-tuning
+
+## Dependency Management Rules
+
+1. **Conda-Only Dependencies**
+   - All dependencies MUST be installed via conda
+   - No pip installations allowed except for:
+     - flash-attn (due to specific wheel requirements)
+     - s2wrapper (due to Git installation)
+     - VILA (due to editable mode requirement)
+   - These exceptions must be documented in the environment.yml
+
+2. **Version Pinning**
+   - All conda packages must have explicit version numbers
+   - No version ranges allowed (e.g., use `=1.2.3` not `>=1.2.3`)
+   - Exceptions must be justified in comments
+
+3. **Channel Priority**
+   - Use channels in this order:
+     1. pytorch
+     2. nvidia
+     3. conda-forge
+     4. defaults
+   - No other channels allowed
+
+4. **Containerization**
+   - All dependencies must be available in conda
+   - No system-level dependencies allowed
+   - No manual compilation required
+   - Environment must be reproducible with `conda env create -f environment.yml`
+
+## Directory Structure Rules
+
+1. **Model Files**
+   - Must be in `models/` directory
+   - No direct Hugging Face Hub access
+   - All model files must be manually transferred
+
+2. **Data Files**
+   - Raw data in `data/raw/`
+   - Processed data in `data/processed/`
+   - No external data sources during runtime
+
+3. **Configuration**
+   - All configs in `configs/`
+   - No runtime configuration changes
+   - All parameters must be in config files
+## Code Rules
+
+1. **Airgap Compatibility**
+   - No internet access required during runtime
+   - All resources must be local
+   - No dynamic downloads
+
+2. **Error Handling**
+   - All scripts must handle airgap scenarios
+   - Clear error messages for missing resources
+   - Graceful degradation when possible
+
+## Documentation Requirements
+
+1. **Environment**
+   - Complete dependency tree
+   - Installation instructions
+   - Version compatibility matrix
+
+2. **Process**
+   - Step-by-step setup guide
+   - Manual resource transfer procedures
+   - Troubleshooting guide
+
+## Enforcement
+
+1. **Code Review**
+   - All PRs must verify conda-only compliance
+   - Environment.yml changes must be justified
+   - No new pip dependencies without approval
+
+2. **Testing**
+   - Environment must build in clean container
+   - All scripts must run without internet
+   - Dependencies must resolve without conflicts

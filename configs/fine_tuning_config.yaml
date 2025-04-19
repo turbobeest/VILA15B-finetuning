@@ -1,0 +1,92 @@
+# NVILA-15B Fine-tuning Configuration
+
+# Model Configuration
+model:
+  name: "NVILA-15B"  # Model name
+  base_path: "./models/NVILA-15B"  # Path to the model directory
+
+# Data Configuration
+data:
+  train_data:
+    - name: "NW-test-camera-1"
+      path: "data/vila-dataset/NW-test-camera-1/data_vila_format.json"
+      weight: 1.0  # Weight of this dataset in the mixture
+  validation_data:
+    # We'll use a portion of each dataset for validation
+    - name: "NW-test-camera-1"
+      path: "data/vila-dataset/NW-test-camera-1/data_vila_format.json"
+      weight: 1.0
+  test_data:
+    - name: "PI-test-camera-1"
+      path: "data/vila-dataset/PI-test-camera-1/data_vila_format.json"
+      weight: 1.0
+  
+  # Data Split Configuration
+  split_strategy:
+    train_ratio: 0.8
+    val_ratio: 0.2
+    random_seed: 42  # For reproducibility
+    
+  image_folder: "data/vila-dataset/"
+  image_aspect_ratio: "pad"
+  num_video_frames: 8  # Number of frames to sample from each video
+
+# Training Hyperparameters
+training:
+  # Optimizer settings
+  optimizer:
+    name: "adamw_torch"
+    learning_rate: 2.0e-5  # Learning rate for fine-tuning
+    weight_decay: 0.0      # Weight decay for regularization
+    
+  # Training schedule
+  scheduler:
+    type: "cosine"         # Cosine learning rate scheduler
+    warmup_ratio: 0.03     # Warm up for first 3% of training steps
+    
+  # Training parameters
+  epochs: 3                # Number of training epochs
+  batch_size: 1            # Per-device batch size
+  gradient_accumulation_steps: 16  # Effective batch size = batch_size * gradient_accumulation_steps
+  max_steps: -1            # -1 means train for full epochs
+  
+  # Model components to tune
+  tune_vision_tower: false  # Freeze vision tower
+  tune_language_model: true  # Fine-tune the language model
+  tune_mm_projector: true   # Fine-tune the multimodal projector
+  
+  # Precision
+  model_dtype: "torch.bfloat16"  # Use bfloat16 for training efficiency
+  
+  # Sequence length
+  model_max_length: 4096   # Maximum sequence length for training
+  
+  # LoRA settings (for parameter-efficient fine-tuning)
+  lora:
+    enable: true           # Enable LoRA for efficient fine-tuning
+    r: 64                  # LoRA rank
+    alpha: 16              # LoRA alpha
+    dropout: 0.05          # LoRA dropout
+    bias: "none"           # LoRA bias
+    llm: true              # Apply LoRA to language model
+    
+  # Save configuration
+  save_strategy: "steps"    # Save model on steps
+  save_steps: 200           # Save checkpoint every 200 steps
+  save_total_limit: 3       # Keep only 3 checkpoints to save disk space
+  
+  # Evaluation
+  evaluation_strategy: "steps"  # Evaluate on steps
+  eval_steps: 100              # Evaluate every 100 steps
+  
+  # DeepSpeed configuration
+  deepspeed:
+    stage: 3                # DeepSpeed ZeRO stage
+    offload: false          # Don't offload to CPU
+    
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - "loss"               # Training loss
+    - "perplexity"         # Perplexity on validation set
+    - "accuracy"           # Accuracy for generation tasks 

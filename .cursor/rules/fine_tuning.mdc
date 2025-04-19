@@ -1,0 +1,26 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# NVILA-15B Fine-tuning Best Practices
+
+## Configuration Structure
+
+- **Use YAML for Configuration**
+  - Store all hyperparameters and settings in YAML configuration files
+  - Example:
+  ```yaml
+  # ✅ DO: Use structured YAML with sections
+  model:
+    name: "NVILA-15B"
+    base_path: "./models/NVILA-15B"
+  
+  training:
+    optimizer:
+      name: "adamw_torch"
+      learning_rate: 2.0e-5
+  
+  # ❌ DON'T: Hardcode parameters in scripts
+  # learning_rate = 2.0e-5  # Bad practice
+  ```

@@ -29,7 +29,7 @@ data:
     
   image_folder: "data/vila-dataset/"
   image_aspect_ratio: "pad"
-  num_video_frames: 8  # Number of frames to sample from each video
+  num_video_frames: 4  # Reduced from 8 to save memory
 
 # Training Hyperparameters
 training:
@@ -40,15 +40,25 @@ training:
     weight_decay: 0.0      # Weight decay for regularization
     
   # Training schedule
-  scheduler:
-    type: "cosine"         # Cosine learning rate scheduler
+  lr_scheduler:
+    name: "cosine"         # Cosine learning rate scheduler
     warmup_ratio: 0.03     # Warm up for first 3% of training steps
     
   # Training parameters
   epochs: 3                # Number of training epochs
-  batch_size: 1            # Per-device batch size
-  gradient_accumulation_steps: 16  # Effective batch size = batch_size * gradient_accumulation_steps
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 16  # Reduced back to 16 (was 32)
   max_steps: -1            # -1 means train for full epochs
+  
+  # Logging and Save/Eval frequency
+  logging_steps: 10
+  save_steps: 100
+  eval_steps: 50
+  save_total_limit: 3
+  save_strategy: "steps"
+  evaluation_strategy: "steps"
+  report_to: "tensorboard"
   
   # Model components to tune
   tune_vision_tower: false  # Freeze vision tower
@@ -57,9 +67,12 @@ training:
   
   # Precision
   model_dtype: "torch.bfloat16"  # Use bfloat16 for training efficiency
+  fp16: false
+  bf16: true
+  tf32: true
   
   # Sequence length
-  model_max_length: 4096   # Maximum sequence length for training
+  model_max_length: 1024   # Reduced further from 2048 to save memory
   
   # LoRA settings (for parameter-efficient fine-tuning)
   lora:
@@ -69,20 +82,16 @@ training:
     dropout: 0.05          # LoRA dropout
     bias: "none"           # LoRA bias
     llm: true              # Apply LoRA to language model
-    
-  # Save configuration
-  save_strategy: "steps"    # Save model on steps
-  save_steps: 200           # Save checkpoint every 200 steps
-  save_total_limit: 3       # Keep only 3 checkpoints to save disk space
-  
-  # Evaluation
-  evaluation_strategy: "steps"  # Evaluate on steps
-  eval_steps: 100              # Evaluate every 100 steps
   
   # DeepSpeed configuration
-  deepspeed:
+  deepspeed_config:
     stage: 3                # DeepSpeed ZeRO stage
     offload: false          # Don't offload to CPU
+    
+  # Other args
+  seed: 42
+  disable_tqdm: false
+  local_rank: -1
     
 # Evaluation Configuration
 evaluation:

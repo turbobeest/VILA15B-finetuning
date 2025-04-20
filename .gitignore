@@ -160,4 +160,9 @@ dev-debug.log
 # Project Specific Ignores
 /models/
 /data/
-/external/ 
+/external/
+
+# Added by Claude Task Master
+tasks.json
+tasks/
+output/ 

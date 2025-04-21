@@ -110,7 +110,7 @@
       "id": 7,
       "title": "Evaluate Fine-tuned Model (NW-test-camera-1, Validation)",
       "description": "Evaluate the performance of the model fine-tuned on NW-test-camera-1. Use appropriate validation techniques (e.g., hold-out set, comparison to base model).",
-      "status": "pending",
+      "status": "done",
       "dependencies": [
         6
       ],
@@ -124,7 +124,7 @@
           "description": "Set up the validation dataset for evaluating the fine-tuned model, ensuring proper data organization and preprocessing.",
           "dependencies": [],
           "details": "Implementation steps:\n1. Load the validation split of NW-test-camera-1 dataset\n2. Preprocess the validation data using the same pipeline as used during fine-tuning\n3. Organize the data into appropriate batches for evaluation\n4. Set up data loaders with appropriate batch size\n5. Verify data integrity and format compatibility with the model\n6. Document the validation dataset statistics (number of samples, class distribution if applicable)\n\nTesting approach:\n- Verify that validation data is loaded correctly by visualizing sample images/videos\n- Confirm that preprocessing steps match those used during training\n- Check that batch loading works without errors",
-          "status": "in-progress",
+          "status": "done",
           "parentTaskId": 7
         },
         {
@@ -135,7 +135,7 @@
             1
           ],
           "details": "Implementation steps:\n1. Load the fine-tuned model and the base model for comparison\n2. Define relevant evaluation metrics (e.g., accuracy, precision, recall, F1-score, mAP for object detection, BLEU/ROUGE for text generation)\n3. Implement a function to run inference on the validation set with both models\n4. Calculate all defined metrics for both the fine-tuned and base models\n5. Compute confidence intervals for the metrics where applicable\n6. Create comparison tables and visualizations of the metrics\n\nTesting approach:\n- Verify metric calculations on a small subset with known expected results\n- Check that the evaluation pipeline runs end-to-end without errors\n- Ensure that metric values are within reasonable ranges",
-          "status": "pending",
+          "status": "done",
           "parentTaskId": 7
         },
         {
@@ -147,7 +147,7 @@
             2
           ],
           "details": "Implementation steps:\n1. Select a diverse set of representative samples from the validation set\n2. Generate outputs from both the fine-tuned and base models for these samples\n3. Create side-by-side comparisons of model outputs with ground truth\n4. Analyze specific cases where the fine-tuned model performs better or worse than the base model\n5. Identify patterns in model performance across different data characteristics\n6. Compile a comprehensive report including:\n   - Quantitative metrics comparison\n   - Qualitative analysis findings\n   - Visualizations of sample outputs\n   - Recommendations for model improvements\n   - Analysis of model strengths and weaknesses\n\nTesting approach:\n- Review the sample selection to ensure diversity and representativeness\n- Verify that the visualizations clearly show the differences between models\n- Have another team member review the report for clarity and completeness",
-          "status": "pending",
+          "status": "done",
           "parentTaskId": 7
         }
       ]

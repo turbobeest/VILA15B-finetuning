@@ -1,0 +1,25 @@
+# Production configuration for VILA-15B fine-tuning
+
+# Data settings
+data:
+  raw_path: "../data/raw"
+  processed_path: "../data/processed"
+  validation_path: "../data/validation"
+  valid_formats: ["mp4", "jpg", "png"]
+  
+# Model settings
+model:
+  base_path: "../models/base"
+  finetuned_path: "../models/finetuned"
+  versioned_path: "../models/versioned"
+  
+# Training settings
+training:
+  batch_size: 4
+  learning_rate: 2.0e-5
+  epochs: 3
+  
+# System settings
+system:
+  log_level: "info"
+  log_path: "../logs"

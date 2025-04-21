@@ -1,0 +1,82 @@
+{
+  "model_info": {
+    "name": "vila-v1.0.0",
+    "version": "1.0.0",
+    "base_model": "NVILA-15B",
+    "creation_date": "2025-04-22T10:30:00",
+    "description": "VILA-15B model fine-tuned on surveillance camera footage"
+  },
+  "training_info": {
+    "dataset": {
+      "name": "NW-test-camera-1",
+      "source": "/production/data/processed/NW-test-camera-1",
+      "sample_count": 245,
+      "creation_date": "2025-04-21"
+    },
+    "hyperparameters": {
+      "learning_rate": 2.0e-5,
+      "batch_size": 4,
+      "epochs": 3,
+      "optimizer": "adamw_torch",
+      "weight_decay": 0.01,
+      "warmup_steps": 100
+    },
+    "hardware": {
+      "gpu": "NVIDIA A100",
+      "gpu_count": 1,
+      "cuda_version": "11.7",
+      "system": "Linux 5.15"
+    },
+    "environment": {
+      "vila_version": "1.0.0",
+      "pytorch_version": "2.0.1",
+      "transformers_version": "4.31.0"
+    },
+    "duration": {
+      "start_time": "2025-04-22T08:15:00",
+      "end_time": "2025-04-22T10:30:00",
+      "total_hours": 2.25
+    }
+  },
+  "performance_metrics": {
+    "validation": {
+      "loss": 0.0568,
+      "perplexity": 1.058,
+      "validation_dataset": "/production/data/validation/NW-test-camera-1"
+    },
+    "comparison": {
+      "base_model_loss": 0.1240,
+      "improvement_percentage": 54.2,
+      "notes": "Significant improvement in surveillance domain tasks"
+    }
+  },
+  "usage": {
+    "recommended_use_cases": [
+      "Surveillance footage analysis",
+      "Security camera monitoring",
+      "Activity detection in CCTV"
+    ],
+    "limitations": [
+      "Model specializes in surveillance context only",
+      "May perform worse on general visual tasks",
+      "Limited to camera angles present in training data"
+    ]
+  },
+  "lineage": {
+    "parent_model": "base-NVILA-15B",
+    "derived_models": [],
+    "training_iterations": 1
+  },
+  "storage": {
+    "model_location": "/production/models/versioned/vila-v1.0.0/",
+    "weights_format": "safetensors",
+    "total_size_gb": 30.2,
+    "checksum": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "authors": [
+    {
+      "name": "VILA Team",
+      "organization": "HUVR Sandbox"
+    }
+  ]
+} 

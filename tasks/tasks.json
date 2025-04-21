@@ -155,15 +155,70 @@
     {
       "id": 8,
       "title": "Develop Production System Architecture",
-      "description": "Design the high-level architecture for an autonomous system that ingests new data and triggers fine-tuning (even if implementation is deferred).",
-      "status": "pending",
+      "description": "Design the high-level architecture for an autonomous system that ingests new data and triggers fine-tuning (even if implementation is deferred), with emphasis on clean production deployment structure.",
+      "status": "done",
       "dependencies": [
         2
       ],
       "priority": "low",
-      "details": "Diagram the components needed: data ingestion mechanism, storage, trigger for fine-tuning, compute resource allocation, model versioning, serving mechanism. Define interfaces between components.",
-      "testStrategy": "An architecture diagram and description document exists.",
-      "subtasks": []
+      "details": "Diagram the components needed: data ingestion mechanism, storage, trigger for fine-tuning, compute resource allocation, model versioning, serving mechanism. Define interfaces between components.\n\nThe production architecture should include:\n1. A dedicated production directory structure separate from development environments\n2. Clear paths for dataset uploads with appropriate validation mechanisms\n3. Standardized storage locations for fine-tuned models with version control\n4. A simplified conda environment definition specifically for production use\n5. Directory structure that enforces isolation between incoming data, model storage, and processing components",
+      "testStrategy": "An architecture diagram and description document exists. The document should include a directory structure map, data flow diagrams, and environment specifications that meet all production requirements.",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Design Production Directory Structure and Isolation",
+          "description": "Create a standardized production directory structure that enforces isolation between data ingestion, processing components, and model storage while following best practices for production systems.",
+          "dependencies": [],
+          "details": "Implementation steps:\n1. Define the root production directory (e.g., `/opt/ml-system` or `/srv/ml-production`)\n2. Create subdirectories with clear separation of concerns:\n   - `/data` with subdirectories for `/data/raw`, `/data/processed`, `/data/validation`\n   - `/models` with subdirectories for `/models/base`, `/models/finetuned`, `/models/versioned`\n   - `/config` for configuration files\n   - `/logs` for system logs\n   - `/scripts` for production scripts\n   - `/services` for service definitions\n3. Create a permissions schema for each directory\n4. Document the directory structure in a `README.md` file\n5. Create initialization scripts to set up the directory structure\n\nTesting approach:\n- Validate that the structure follows security best practices\n- Ensure proper isolation between components\n- Test initialization scripts on a clean environment\n- Verify appropriate permissions are set",
+          "status": "done",
+          "parentTaskId": 8
+        },
+        {
+          "id": 2,
+          "title": "Implement Data Ingestion and Validation Flow",
+          "description": "Design and implement the data ingestion pipeline that handles incoming data, validates it, and prepares it for processing in the production environment.",
+          "dependencies": [
+            1
+          ],
+          "details": "Implementation steps:\n1. Create a data ingestion service that monitors for new data in `/data/raw`\n2. Implement data validation checks:\n   - Schema validation\n   - Data quality checks\n   - Format verification\n3. Design error handling for invalid data with appropriate logging\n4. Implement data preprocessing to standardize incoming data\n5. Create a data registry to track processed datasets in `/data/processed`\n6. Implement a notification system for ingestion events\n\nTesting approach:\n- Test with valid and invalid sample datasets\n- Verify validation logic catches malformed data\n- Confirm proper error handling and logging\n- Validate the data registry correctly tracks processed datasets\n- Test performance with different data volumes",
+          "status": "done",
+          "parentTaskId": 8
+        },
+        {
+          "id": 3,
+          "title": "Design Model Storage and Versioning System",
+          "description": "Create a model versioning and storage system that maintains model lineage, enables rollbacks, and provides clear access patterns for model serving.",
+          "dependencies": [
+            1
+          ],
+          "details": "Implementation steps:\n1. Define model metadata schema including:\n   - Model version\n   - Training date\n   - Source dataset references\n   - Performance metrics\n   - Model parameters\n2. Implement versioning strategy using semantic versioning (e.g., v1.2.3)\n3. Create storage structure in `/models/versioned/{model_name}/{version}/`\n4. Implement model registration process that:\n   - Validates model artifacts\n   - Generates metadata\n   - Stores in the correct location\n5. Create model lineage tracking to maintain relationships between models\n6. Implement model rollback functionality\n\nTesting approach:\n- Test model registration with sample models\n- Verify version increments work correctly\n- Test rollback functionality\n- Validate metadata accuracy\n- Ensure proper access controls on model storage",
+          "status": "done",
+          "parentTaskId": 8
+        },
+        {
+          "id": 4,
+          "title": "Define Production Conda Environment Specification",
+          "description": "Create a simplified, reproducible conda environment specifically for production use with only the necessary dependencies.",
+          "dependencies": [],
+          "details": "Implementation steps:\n1. Create a `production-environment.yml` file with:\n   - Specific package versions\n   - Minimal dependencies required for production\n   - Python version pinning\n2. Include only production-necessary packages (exclude development tools)\n3. Add environment validation scripts to verify integrity\n4. Create installation documentation\n5. Implement environment activation scripts\n6. Add dependency vulnerability scanning\n\nTesting approach:\n- Test environment creation on a clean system\n- Verify all production functionality works in the environment\n- Test activation scripts\n- Validate environment isolation\n- Check for security vulnerabilities in dependencies",
+          "status": "done",
+          "parentTaskId": 8
+        },
+        {
+          "id": 5,
+          "title": "Design Component Interfaces and Integration",
+          "description": "Define clear interfaces between system components and implement the integration points that enable the autonomous fine-tuning workflow.",
+          "dependencies": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "details": "Implementation steps:\n1. Define interface contracts between components:\n   - Data ingestion to validation\n   - Validation to processing\n   - Processing to model training\n   - Model training to versioning\n   - Model versioning to serving\n2. Implement a central orchestrator service that:\n   - Monitors for new validated data\n   - Triggers fine-tuning jobs\n   - Handles resource allocation\n   - Manages model promotion\n3. Create configuration for compute resource allocation\n4. Implement event-based communication between components\n5. Define API specifications for all service interfaces\n6. Create system diagrams documenting component relationships\n\nTesting approach:\n- Test end-to-end workflow with sample data\n- Verify proper triggering of fine-tuning\n- Test error handling across component boundaries\n- Validate resource allocation works correctly\n- Test system recovery after component failures",
+          "status": "done",
+          "parentTaskId": 8
+        }
+      ]
     },
     {
       "id": 9,
